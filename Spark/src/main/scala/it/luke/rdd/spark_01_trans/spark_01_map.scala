@@ -3,6 +3,8 @@ package it.luke.rdd.spark_01_trans
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
+import scala.collection.mutable
+
 object spark_01_map {
 
   def main(args: Array[String]): Unit = {
@@ -10,6 +12,8 @@ object spark_01_map {
     val conf: SparkConf = new SparkConf().setMaster("local[4]").setAppName("abc")
     val sc: SparkContext = new SparkContext(conf)
 
+
+    val a = new mutable.HashMap[String,Int]()
     //在map中传入def function
 //    fun_map(sc)
     //用map进行迭代集合内容
