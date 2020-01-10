@@ -19,7 +19,7 @@ object spark_03_read_dir {
     val arr: List[String] = get_info_dir(a, new Path("hdfs://node01:8020/user/hive/warehouse/itcast_ods.db/ods_weblog_origin"))
 
     //通过过滤的方法将小于30天数据过滤出来
-    val strings: List[String] = filter_day(arr)
+    val strings: List[String] = filter_day(arr,"30")
 
   }
 
@@ -37,12 +37,13 @@ object spark_03_read_dir {
     arr.toList
   }
 
-  def filter_day(arr: List[String]) = {
+  def filter_day(arr: List[String],day:String) = {
       arr.filter(item => {
+        val daylong = day.toLong
         val date = new Date()
         val currentTime: Long = date.getTime
         //调用方法进行判断是否小于30天
-        if (diff_time(item, currentTime) < 30 * 60 * 60 * 24 * 1000l) {
+        if (diff_time(item, currentTime) < daylong * 60 * 60 * 24 * 1000l) {
           //        println("true")
           true
         }
