@@ -1,4 +1,4 @@
-id,name
-1,lisi
-2,zhansan
-3,zhaolei
+id|name
+1|lisi
+2|zhansan
+3|zhaolei
