@@ -15,6 +15,8 @@ object spark_07_union {
 
     sample_union(sc)
 
+    Thread.sleep(1000000)
+
   }
 
   def sample_union(sc: SparkContext): Unit = {
