@@ -1,0 +1,6 @@
+hello,word,hello,word
+hadoop,spark,hadoop
+hadoop,spark,hadoop
+hbase,hello
+hbase,hello
+hello,word,hello,word
