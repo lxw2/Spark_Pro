@@ -1,6 +1,7 @@
 package it.luke.sql
 
 import UDF.udf
+import org.apache.spark.sql.execution.QueryExecution
 import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.junit.Test
@@ -771,7 +772,7 @@ class Spark_sql_pro {
 //        |sort by student.SID,ssc.avgsc desc
 //      """.stripMargin).show()
 
-    val a: Unit = spark.sql(
+    val a= spark.sql(
       """
         |select
         |student.SID,student.Sname,avg(ifnull(sc.score,0)) avgscore,ifnull(sc1.score,0),
@@ -787,8 +788,11 @@ class Spark_sql_pro {
         |on sc3.SID = student.SID and sc3.CID = 03
         |group by student.SID,student.Sname,sc1.score,sc2.score,sc3.score
         |order by avg(sc.score) DESC
-      """.stripMargin).show()
+      """.stripMargin)
 
+    val execution: QueryExecution = a.queryExecution
+    println(execution)
+    a.explain()
 
   }
 
@@ -798,17 +802,10 @@ class Spark_sql_pro {
     val sc = getSc_table
     sc.createOrReplaceTempView("sc")
 
-    val res: Array[Row] = spark.sql("select sc.SID from sc ")
-      .collect()
-
-    val arr = new ArrayBuffer[String]()
-    res.map(item=>{
-      val el = item.getString(0)
-      arr+=(el)
-    })
-
-    val a  = arr.mkString(",")
-    println(a)
+    spark.sql(
+      """
+        |select sc.CID,max(score) from sc group by sc.CID
+      """.stripMargin).explain()
 
   }
 }
