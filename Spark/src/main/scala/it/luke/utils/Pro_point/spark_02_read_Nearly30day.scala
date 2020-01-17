@@ -1,11 +1,6 @@
-package it.luke.utils.spark_untils
+package it.luke.utils.Pro_point
 
-import java.net.URI
-import java.util
-
-import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.{FileSystem, Path}
-import org.apache.spark.sql.{DataFrame, Row, SaveMode, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 object spark_02_read_Nearly30day {
 
