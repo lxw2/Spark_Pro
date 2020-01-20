@@ -1,6 +1,12 @@
 package it.luke.utils.Pro_point
 
-import org.apache.spark.sql.SparkSession
+import java.net.URI
+import java.util
+
+import it.luke.utils.spark_untils.spark_03_read_dir
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.{FileSystem, Path}
+import org.apache.spark.sql.{Row, SparkSession}
 
 object spark_02_read_Nearly30day {
 
@@ -26,54 +32,54 @@ object spark_02_read_Nearly30day {
             |spark_integrition.student
           """.stripMargin).show()
 
-//    val day = "300"
-//    //使用读取文件系统的方式(从存在的文件中读取)
-//    val path: Path = new Path("hdfs://node01:8020/user/hive/warehouse/itcast_ods.db/ods_weblog_origin")
-//
-//    val pathlist: List[String] = get_nearly30day(path, day)
-//    pathlist.foreach(println(_)) //dt=20191001
-//    //使用读取hive分区的方式读取近30天的数据
-//    import scala.collection.JavaConversions._
-//    val listRow: util.List[Row] = get_nearly30day_hive(spark, day)
-//    listRow.map(item => {
-//      val dt = item.getString(0)
-//      val res = s"dt=${dt}"
-//      res
-//    }).foreach(println(_)) //dt=20191001
+    val day = "300"
+    //使用读取文件系统的方式(从存在的文件中读取)
+    val path: Path = new Path("hdfs://node01:8020/user/hive/warehouse/itcast_ods.db/ods_weblog_origin")
+
+    val pathlist: List[String] = get_nearly30day(path, day)
+    pathlist.foreach(println(_)) //dt=20191001
+    //使用读取hive分区的方式读取近30天的数据
+    import scala.collection.JavaConversions._
+    val listRow: util.List[Row] = get_nearly30day_hive(spark, day)
+    listRow.map(item => {
+      val dt = item.getString(0)
+      val res = s"dt=${dt}"
+      res
+    }).foreach(println(_)) //dt=20191001
 
 
   }
 
-//  def get_nearly30day(path: Path, day: String) = {
-//
-//    //创建文件系统
-//    val fs = FileSystem.get(new URI(path.toString), new Configuration())
-//
-//    //获取子目录路径集合
-//    val path_List: List[String] = spark_03_read_dir.get_info_dir(fs, path)
-//
-//    //进行对集合进行过滤,获得小于30天的结果集
-//    val resList: List[String] = spark_03_read_dir.filter_day(path_List, day)
-//    resList
-//  }
-//
-//  def get_nearly30day_hive(spark: SparkSession, day: String) = {
-//
-//    //调用以支持hive的sparkSession进行访问hive表数据
-//    //datediff(current_timestamp, dt)
-//    val resourceDF: util.List[Row] = spark.sql(
-//      s"""
-//         |select dt
-//         |from itcast_ods.ods_weblog_origin
-//         |where
-//         |datediff(
-//         |from_unixtime(unix_timestamp(),'yyyy-MM-dd'),
-//         |from_unixtime(unix_timestamp(dt,'yyyyMMdd'),'yyyy-MM-dd')) <=${day}
-//         |group by dt
-//      """.stripMargin).collectAsList()
-//    resourceDF
-//
-//
-//  }
+  def get_nearly30day(path: Path, day: String) = {
+
+    //创建文件系统
+    val fs = FileSystem.get(new URI(path.toString), new Configuration())
+
+    //获取子目录路径集合
+    val path_List: List[String] = spark_03_read_dir.get_info_dir(fs, path)
+
+    //进行对集合进行过滤,获得小于30天的结果集
+    val resList: List[String] = spark_03_read_dir.filter_day(path_List, day)
+    resList
+  }
+
+  def get_nearly30day_hive(spark: SparkSession, day: String) = {
+
+    //调用以支持hive的sparkSession进行访问hive表数据
+    //datediff(current_timestamp, dt)
+    val resourceDF: util.List[Row] = spark.sql(
+      s"""
+         |select dt
+         |from itcast_ods.ods_weblog_origin
+         |where
+         |datediff(
+         |from_unixtime(unix_timestamp(),'yyyy-MM-dd'),
+         |from_unixtime(unix_timestamp(dt,'yyyyMMdd'),'yyyy-MM-dd')) <=${day}
+         |group by dt
+      """.stripMargin).collectAsList()
+    resourceDF
+
+
+  }
 
 }
