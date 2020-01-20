@@ -1,5 +1,7 @@
 package it.luke.utils.spark_untils
 
+import com.typesafe.config.ConfigFactory
+
 /**
   * 配置参数获取的帮助类
   */
