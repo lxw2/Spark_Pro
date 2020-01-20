@@ -130,6 +130,33 @@ object spark_01_Get_DS_DF {
 //    import spark.implicits._
 //    frame2.select($"name").show()
 
+
+    import spark.implicits._
+
+    val df1: DataFrame = Seq("nihao", "hello").toDF("text")
+
+    /*
+    +-----+
+    | text|
+    +-----+
+    |nihao|
+    |hello|
+    +-----+
+     */
+    df1.show()
+
+    val df2: DataFrame = Seq(("a", 1), ("b", 1)).toDF("word", "count")
+
+    /*
+    +----+-----+
+    |word|count|
+    +----+-----+
+    |   a|    1|
+    |   b|    1|
+    +----+-----+
+     */
+    df2.show()
+
   }
 
   /**
